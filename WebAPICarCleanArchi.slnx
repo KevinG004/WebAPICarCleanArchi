@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="CarApiClean/CarApiClean.csproj" />
+  <Project Path="CarList.Core/CarList.Core.csproj" />
+  <Project Path="CarList.Domain/CarList.Domain.csproj" />
+  <Project Path="CarList.Infrastucture/CarList.Infrastucture.csproj" />
+</Solution>
