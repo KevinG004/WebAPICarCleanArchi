@@ -73,5 +73,5 @@ jobs:
         uses: azure/webapps-deploy@v3 # <-- VERSION RÉCENTE
         with:
           app-name: 'kevapi'
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILES }}
           package: ./publish
