@@ -1,6 +1,6 @@
 ﻿using CarApiClean.DTOs.Responses;
 using CarList.Core.Interfaces.Repositories;
-using CarList.Core.Interfaces.Services;
+using CarList.Core.Interfaces.Services.Data;
 using CarList.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -37,7 +37,8 @@ namespace CarList.Core.Services.Data
                 Id = Guid.NewGuid(),
                 Tire = carDTO.Tire,
                 Models = carDTO.Models,
-                HorsePower = carDTO.HorsePower
+                HorsePower = carDTO.HorsePower,
+                PersonneId = carDTO.PersonneId,
             };
             await _repository.Post(NewCar);
 

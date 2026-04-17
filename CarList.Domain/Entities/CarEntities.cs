@@ -9,11 +9,13 @@ namespace CarList.Domain.Entities
         
         public Guid Id { get; set; }
 
+        public Guid PersonneId { get; set; }
+        public Personne? personne {  get; set; }
         public string Models { get; set; } = null!;
 
         public int Tire { get; set; }
 
         public int HorsePower { get; set; }
-    
+
     }
 }

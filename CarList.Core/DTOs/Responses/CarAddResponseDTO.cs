@@ -7,6 +7,8 @@
         public int Tire { get; set; }
 
         public int HorsePower { get; set; }
+
+        public Guid PersonneId { get; set; }
     }
     public class PatchDTO
     {

@@ -1,5 +1,5 @@
 ﻿using CarApiClean.DTOs.Responses;
-using CarList.Core.Interfaces.Services;
+using CarList.Core.Interfaces.Services.Data;
 using CarList.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,14 +13,14 @@ namespace CarApiClean.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CarsController : ControllerBase
+    public class CarsController(ICarService context) : ControllerBase
     {
-        private readonly ICarService _context;
+        private readonly ICarService _context = context;
 
-        public CarsController(ICarService context)
-        {
-            _context = context;
-        }
+        //public CarsController(ICarService context)
+        //{
+        //    _context = context;
+        //}
 
         // GET: api/Cars
         [HttpGet]
@@ -84,7 +84,6 @@ namespace CarApiClean.Controllers
             var Car = await _context.Post(carDTO);
 
             return Ok(Car);
-            ;
         }
 
         // DELETE: api/Cars/5

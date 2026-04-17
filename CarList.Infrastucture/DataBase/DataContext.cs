@@ -20,6 +20,8 @@ namespace CarList.Infrastucture.DataBase
 
         public DbSet<Car> Cars { get; set; }
 
+        public DbSet<Personne> Personnes {  get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(DataContext).Assembly);

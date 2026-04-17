@@ -1,5 +1,7 @@
-﻿using CarList.Core.Interfaces.Repositories;
-using CarList.Core.Interfaces.Services;
+﻿using CarApiClean.Extension;
+using CarList.Core.Interfaces.Repositories;
+using CarList.Core.Interfaces.Services.Data;
+using CarList.Core.Interfaces.Services.Tools;
 using CarList.Core.Services.Data;
 using CarList.Infrastucture.DataBase;
 using CarList.Infrastucture.Repositories;
@@ -15,8 +17,13 @@ builder.Services.AddDbContext<DataContext>(options =>
     ));
 builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<ICarRepo, CarRepo>();
+builder.Services.AddScoped<IPersonneRepo, PersonneRepo>();
+builder.Services.AddScoped<IPersonneService, PersonneService>();
+builder.Services.AddScoped<IHashPassword, HashPassword>();
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.ConfigurePolicyCors(builder.Configuration);
+
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
@@ -31,8 +38,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("CorsPolicy");
 
 app.MapControllers();
 
 app.Run();
-
