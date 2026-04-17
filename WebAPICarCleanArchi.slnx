@@ -3,5 +3,5 @@
   <Project Path="CarList.Core/CarList.Core.csproj" />
   <Project Path="CarList.Domain/CarList.Domain.csproj" />
   <Project Path="CarList.Infrastucture/CarList.Infrastucture.csproj" />
-  <Project Path="TestGetById/TestGetById.csproj" Id="3b34b46a-c026-4b1f-b4c5-6319d509f1b5" />
+  <Project Path="TestProject1/TestProject1.csproj" Id="8f20cb5a-30c1-49e1-b5e4-7ca75ae5155c" />
 </Solution>
