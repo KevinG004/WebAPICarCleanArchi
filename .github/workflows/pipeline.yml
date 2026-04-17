@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0'
 
@@ -21,7 +21,6 @@ jobs:
         run: dotnet restore
 
       - name: Lancer les tests
-        # Remplace par le chemin exact vers ton projet de test si nécessaire
         run: dotnet test TestPersonneControllerGetById/TestPersonneControllerGetById.csproj --no-restore
 
       - name: Notification Teams si échec
@@ -37,10 +36,10 @@ jobs:
     needs: test
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0'
 
@@ -48,14 +47,13 @@ jobs:
         run: dotnet restore
 
       - name: Build
-        # Remplace par le chemin vers ton projet API
-        run: dotnet build WebAPICarCleanArchi/WebAPICarCleanArchi.csproj --no-restore --configuration Release
+        run: dotnet build CarApiClean/CarApiClean.csproj --no-restore --configuration Release
 
       - name: Publish
-        run: dotnet publish WebAPICarCleanArchi/WebAPICarCleanArchi.csproj --no-restore --configuration Release -o ./publish
+        run: dotnet publish CarApiClean/CarApiClean.csproj --no-restore --configuration Release -o ./publish
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4  # <-- PASSAGE EN V4 ICI
         with:
           name: app-publish
           path: ./publish
@@ -66,16 +64,14 @@ jobs:
     needs: build
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4 # <-- PASSAGE EN V4 ICI
         with:
           name: app-publish
           path: ./publish
 
       - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v3 # <-- VERSION RÉCENTE
         with:
-          # REMPLACE PAR LE NOM DE TA WEB APP AZURE
-          app-name: 'kevinapi' 
-          # UTILISE LE SECRET DU PROFIL DE PUBLICATION
+          app-name: 'TON_NOM_D_APP_SERVICE'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ./publish
