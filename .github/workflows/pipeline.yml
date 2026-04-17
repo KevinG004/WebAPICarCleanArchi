@@ -1,0 +1,81 @@
+name: pipeline
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  # --- ÉTAPE 1 : TESTS UNITAIRES ---
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '10.0'
+
+      - name: Restaurer les dépendances
+        run: dotnet restore
+
+      - name: Lancer les tests
+        # Remplace par le chemin exact vers ton projet de test si nécessaire
+        run: dotnet test TestPersonneControllerGetById/TestPersonneControllerGetById.csproj --no-restore
+
+      - name: Notification Teams si échec
+        if: failure()
+        run: |
+          curl -H 'Content-Type: application/json' \
+          -d '{"text":"❌ Les tests ont échoué sur la branche ${{ github.ref }}"}' \
+          ${{ secrets.TEAMS_WEBHOOK_URL }}
+
+  # --- ÉTAPE 2 : GÉNÉRATION DE L'ARTIFACT ---
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '10.0'
+
+      - name: Restaurer les dépendances
+        run: dotnet restore
+
+      - name: Build
+        # Remplace par le chemin vers ton projet API
+        run: dotnet build WebAPICarCleanArchi/WebAPICarCleanArchi.csproj --no-restore --configuration Release
+
+      - name: Publish
+        run: dotnet publish WebAPICarCleanArchi/WebAPICarCleanArchi.csproj --no-restore --configuration Release -o ./publish
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-publish
+          path: ./publish
+
+  # --- ÉTAPE 3 : DÉPLOIEMENT SUR AZURE ---
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: app-publish
+          path: ./publish
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          # REMPLACE PAR LE NOM DE TA WEB APP AZURE
+          app-name: 'kevinapi' 
+          # UTILISE LE SECRET DU PROFIL DE PUBLICATION
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./publish
