@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ master ]
+    branches: [ Luca ]
   pull_request:
-    branches: [ master ]
+    branches: [ Luca ]
 
 env:
   API_PROJECT: CarApiClean/CarApiClean.csproj
